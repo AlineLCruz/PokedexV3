@@ -106,3 +106,4 @@ object PokemonMock {
             description = "Eevee possui uma estrutura genética instável e várias evoluções possíveis."
         )
     )
+}

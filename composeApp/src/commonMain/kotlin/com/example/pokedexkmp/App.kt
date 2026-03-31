@@ -14,7 +14,6 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.internal.composableLambda
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -32,7 +31,6 @@ import pokedexkmp.composeapp.generated.resources.Res
 import pokedexkmp.composeapp.generated.resources.compose_multiplatform
 
 @Composable
-@Preview
 fun App() {
     MaterialTheme {
         val navController = rememberNavController()
@@ -62,9 +60,10 @@ fun App() {
                 )
             }
 
+
             composable<PokemonDetailRoute> { backStackEntry ->
                 val route = backStackEntry.toRoute<PokemonDetailRoute>()
-                val pokemon = PokemonMock.findById(route.pokemonId)
+                val pokemon = PokemonMock.pokedex.first()
 
                 PokemonDetailScreen(
                     pokemon = pokemon,
@@ -73,9 +72,7 @@ fun App() {
                     }
                 )
             }
-                )
             }
         }
 
         }
-    }

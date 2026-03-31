@@ -31,7 +31,7 @@ fun HomeScreen (
         Text (
             text = "Exemplo de navegação, grid, utilização de imagens e objetos",
             style = MaterialTheme.typography.bodyLarge,
-            modifier = Modifier.padding(top = 12.dp, botton = 24.dp)
+            modifier = Modifier.padding()
         )
 
         Button(onClick = onSeePokedexclick) {
