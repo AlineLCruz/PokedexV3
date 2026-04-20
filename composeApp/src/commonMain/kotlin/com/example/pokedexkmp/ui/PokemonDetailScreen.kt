@@ -1,20 +1,23 @@
 package com.example.pokedexkmp.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.semantics.Role.Companion.Button
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.example.pokedexkmp.data.Pokemon
@@ -22,7 +25,8 @@ import com.example.pokedexkmp.data.Pokemon
 @Composable
 fun PokemonDetailScreen(
     pokemon: Pokemon?,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    onAddToTeamClick: (Pokemon) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -98,11 +102,30 @@ fun PokemonDetailScreen(
                 )
 
                 pokemon.stats.forEach { stat ->
-                    Text(
-                        text = "${stat.name}: ${stat.value}",
-                        style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.fillMaxWidth()
-                    )
+                    Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                        Text(
+                            text = "${stat.name.capitalizePokemonName()}:",
+                            style = MaterialTheme.typography.bodyMedium,
+                            modifier = Modifier.weight(0.3f)
+                        )
+                        LinearProgressIndicator(
+                            progress = stat.value / 100f, // Assuming max stat value is 100 for progress indicator
+                            modifier = Modifier.weight(0.0f).height(8.dp),
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                        Text(
+                            text = stat.value.toString(),
+                            style = MaterialTheme.typography.bodyMedium,
+                            modifier = Modifier.weight(0.1f).padding(start = 8.dp)
+                        )
+                    }
+                }
+
+                Button(
+                    onClick = { onAddToTeamClick(pokemon) },
+                    modifier = Modifier.fillMaxWidth().padding(top = 16.dp)
+                ) {
+                    Text("Adicionar ao Time")
                 }
             }
         }

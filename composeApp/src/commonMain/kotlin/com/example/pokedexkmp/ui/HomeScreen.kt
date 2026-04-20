@@ -14,7 +14,8 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun HomeScreen (
-    onSeePokedexclick: () -> Unit
+    onSeePokedexclick: () -> Unit,
+    onSeeTeamClick: () -> Unit
 
 ){
     Column (
@@ -36,6 +37,10 @@ fun HomeScreen (
 
         Button(onClick = onSeePokedexclick) {
             Text( "Ver pokedex")
+        }
+
+        Button(onClick = onSeeTeamClick) {
+            Text( "Ver Meu Time")
         }
 
 }

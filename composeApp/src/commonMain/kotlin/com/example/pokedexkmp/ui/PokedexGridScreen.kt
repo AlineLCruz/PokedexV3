@@ -18,42 +18,52 @@ import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.example.pokedexkmp.data.Pokemon
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PokedexGridScreen(
     pokemons: List<Pokemon>,
     onPokemonClick: (Int) -> Unit,
     onBackClick: () -> Unit
 ) {
+    var searchText by remember { mutableStateOf("") }
+    val filteredPokemons = remember(pokemons, searchText) {
+        if (searchText.isBlank()) {
+            pokemons
+        } else {
+            pokemons.filter { it.name.contains(searchText, ignoreCase = true) }
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        Text(
-            text = "Pokédex",
-            style = MaterialTheme.typography.headlineMedium
-        )
-
-        Text(
-            text = "Mock local com estrutura inspirada na PokéAPI",
-            style = MaterialTheme.typography.bodyMedium,
-            modifier = Modifier.padding(top = 8.dp, bottom = 16.dp)
-        )
-
-        Button(
-            onClick = onBackClick,
-            modifier = Modifier.padding(bottom = 16.dp)
+        SearchBar(
+            query = searchText,
+            onQueryChange = { searchText = it },
+            onSearch = { /* Do nothing for now, filtering happens on query change */ },
+            active = false,
+            onActiveChange = { /* Not used for now */ },
+            placeholder = { Text("Buscar Pokémon") },
+            modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp)
         ) {
-            Text("Voltar")
+            // Content when search bar is active, not needed for simple filtering
         }
 
         LazyVerticalGrid(
@@ -63,7 +73,7 @@ fun PokedexGridScreen(
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            items(pokemons) { pokemon ->
+            items(filteredPokemons) { pokemon ->
                 PokemonGridItem(
                     pokemon = pokemon,
                     onClick = { onPokemonClick(pokemon.id) }
@@ -127,5 +137,5 @@ private fun PokemonGridItem(
                 }
             }
         }
-        }
-        }
+    }
+}
